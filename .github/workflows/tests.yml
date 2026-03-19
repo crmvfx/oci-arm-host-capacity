@@ -33,16 +33,22 @@ jobs:
           OCI_SUBNET_ID:            ${{ secrets.OCI_SUBNET_ID }}
           OCI_IMAGE_ID:             ${{ secrets.OCI_IMAGE_ID }}
           OCI_SSH_PUBLIC_KEY:       ${{ secrets.OCI_SSH_PUBLIC_KEY }}
+          TELEGRAM_BOT_API_KEY:     ${{ secrets.TELEGRAM_BOT_API_KEY }}
+          TELEGRAM_USER_ID:         ${{ secrets.TELEGRAM_USER_ID }}
           OCI_SHAPE:                VM.Standard.A1.Flex
           OCI_OCPUS:                4
           OCI_MEMORY_IN_GBS:        24
-        run: php index.php
+        run: php index.php | tee /tmp/oci_output.txt
+
       - name: Disable workflow on success
         if: success()
         run: |
-          if grep -q "ocid1.instance" /tmp/oci_output.txt 2>/dev/null; then
-            curl -X PUT \
+          if grep -q "ocid1.instance" /tmp/oci_output.txt; then
+            echo "✅ Instance created! Disabling workflow..."
+            curl -s -X PUT \
               -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
               -H "Accept: application/vnd.github.v3+json" \
               https://api.github.com/repos/${{ github.repository }}/actions/workflows/tests.yml/disable
+          else
+            echo "⏳ No instance yet. Will retry in 5 minutes."
           fi
