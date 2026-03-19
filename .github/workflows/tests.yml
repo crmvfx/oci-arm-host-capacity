@@ -37,3 +37,12 @@ jobs:
           OCI_OCPUS:                4
           OCI_MEMORY_IN_GBS:        24
         run: php index.php
+      - name: Disable workflow on success
+        if: success()
+        run: |
+          if grep -q "ocid1.instance" /tmp/oci_output.txt 2>/dev/null; then
+            curl -X PUT \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              https://api.github.com/repos/${{ github.repository }}/actions/workflows/tests.yml/disable
+          fi
