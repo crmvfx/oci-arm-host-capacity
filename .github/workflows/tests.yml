@@ -24,17 +24,16 @@ jobs:
 
       - name: Run capacity check
         env:
-          OCI_CLI_USER:            ${{ secrets.OCI_USER_ID }}
-          OCI_CLI_TENANCY:         ${{ secrets.OCI_TENANCY_ID }}
-          OCI_CLI_FINGERPRINT:     ${{ secrets.OCI_FINGERPRINT }}
-          OCI_CLI_KEY_FILE:        /tmp/oci_private_key.pem
-          OCI_CLI_REGION:          ${{ secrets.OCI_REGION }}
-          OCI_SUBNET_ID:           ${{ secrets.OCI_SUBNET_ID }}
-          OCI_IMAGE_ID:            ${{ secrets.OCI_IMAGE_ID }}
-          OCI_AVAILABILITY_DOMAIN: ${{ secrets.OCI_AVAILABILITY_DOMAIN }}
-          OCI_SSH_PUBLIC_KEY:      ${{ secrets.OCI_SSH_PUBLIC_KEY }}
-          OCI_COMPARTMENT_ID:      ${{ secrets.OCI_TENANCY_ID }}
-          OCI_SHAPE:               VM.Standard.A1.Flex
-          OCI_OCPUS:               4
-          OCI_MEMORY_IN_GBS:       24
+          OCI_REGION:               ${{ secrets.OCI_REGION }}
+          OCI_USER_ID:              ${{ secrets.OCI_USER_ID }}
+          OCI_TENANCY_ID:           ${{ secrets.OCI_TENANCY_ID }}
+          OCI_KEY_FINGERPRINT:      ${{ secrets.OCI_FINGERPRINT }}
+          OCI_PRIVATE_KEY_FILENAME: /tmp/oci_private_key.pem
+          OCI_AVAILABILITY_DOMAIN:  ${{ secrets.OCI_AVAILABILITY_DOMAIN }}
+          OCI_SUBNET_ID:            ${{ secrets.OCI_SUBNET_ID }}
+          OCI_IMAGE_ID:             ${{ secrets.OCI_IMAGE_ID }}
+          OCI_SSH_PUBLIC_KEY:       ${{ secrets.OCI_SSH_PUBLIC_KEY }}
+          OCI_SHAPE:                VM.Standard.A1.Flex
+          OCI_OCPUS:                4
+          OCI_MEMORY_IN_GBS:        24
         run: php index.php
